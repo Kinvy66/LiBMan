@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="54" viewBox="0 0 256 54">
+  <!-- 蓝色工具箱 -->
+  <g transform="translate(0,4)">
+    <!-- 箱体 -->
+    <rect x="0" y="12" width="46" height="38" rx="6" ry="6" fill="#2b7bd6"/>
+    <!-- 把手 -->
+    <rect x="8" y="0" width="30" height="14" rx="3" ry="3" fill="#2b7bd6"/>
+    <!-- 黄色头像 -->
+    <circle cx="23" cy="28" r="7" fill="#f6c24a"/>
+    <rect x="16" y="36" width="14" height="12" rx="3" ry="3" fill="#f6c24a"/>
+  </g>
+
+  <!-- LiBMan 文本 -->
+  <text x="60" y="38" font-family="Arial, Helvetica, sans-serif"
+        font-size="28" font-weight="700" fill="#ffffff">
+    LiBMan
+  </text>
+</svg>

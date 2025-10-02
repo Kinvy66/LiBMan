@@ -8,8 +8,8 @@ set(CMAKE_AUTORCC ON)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(SARibbonBar_DIR "E:\\Rep\\Qt_Project\\SARibbon\\bin_qt6.5.3_MSVC_x64\\lib\\cmake\\SARibbonBar")
-
+# set(SARibbonBar_DIR "E:\\Rep\\Qt_Project\\SARibbon\\bin_qt6.5.3_MSVC_x64\\lib\\cmake\\SARibbonBar")
+set(SARibbonBar_DIR "${CMAKE_CURRENT_SOURCE_DIR}\\SARibbon\\lib\\cmake\\SARibbonBar")
 
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)

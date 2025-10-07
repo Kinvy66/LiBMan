@@ -8,12 +8,14 @@ set(CMAKE_AUTORCC ON)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-# set(SARibbonBar_DIR "E:\\Rep\\Qt_Project\\SARibbon\\bin_qt6.5.3_MSVC_x64\\lib\\cmake\\SARibbonBar")
+#set(SARibbonBar_DIR "E:\\Repository\\Qt_Project\\SARibbon\\bin_qt6.5.3_MSVC_x64\\lib\\cmake\\SARibbonBar")
 set(SARibbonBar_DIR "${CMAKE_CURRENT_SOURCE_DIR}\\SARibbon\\lib\\cmake\\SARibbonBar")
+set(VTK_DIR C:\\opt\\VTK\\install\\lib\\cmake\\vtk-9.5)
 
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
 find_package(SARibbonBar)
+find_package(VTK REQUIRED)
 
 set(PROJECT_SOURCES
         main.cpp
@@ -27,6 +29,10 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         ${PROJECT_SOURCES}
         libanresource.qrc
         ApplicationWidget.h ApplicationWidget.cpp ApplicationWidget.ui
+        SettingDialog.h SettingDialog.cpp SettingDialog.ui
+        ToolDialog.h ToolDialog.cpp ToolDialog.ui
+        AboutDialog.h AboutDialog.cpp AboutDialog.ui
+        FunctionDialog.h FunctionDialog.cpp FunctionDialog.ui
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET LiBMan APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR
@@ -48,6 +54,7 @@ endif()
 
 target_link_libraries(LiBMan PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
 target_link_libraries(LiBMan PUBLIC SARibbonBar::SARibbonBar)
+target_link_libraries(LiBMan PRIVATE ${VTK_LIBRARIES})
 
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.

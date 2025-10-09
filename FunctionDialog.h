@@ -14,7 +14,12 @@ class FunctionDialog : public QDialog
 public:
     explicit FunctionDialog(QWidget *parent = nullptr);
     ~FunctionDialog();
-
+    
+private slots:
+    void on_pushButton_Save_clicked();
+    
+    void on_pushButton_Cancel_clicked();
+    
 private:
     Ui::FunctionDialog *ui;
 };

@@ -6,9 +6,22 @@ FunctionDialog::FunctionDialog(QWidget *parent)
     , ui(new Ui::FunctionDialog)
 {
     ui->setupUi(this);
+    this->setWindowTitle("参数配置");
 }
 
 FunctionDialog::~FunctionDialog()
 {
     delete ui;
 }
+
+void FunctionDialog::on_pushButton_Save_clicked()
+{
+    accept();
+}
+
+
+void FunctionDialog::on_pushButton_Cancel_clicked()
+{
+    accept();
+}
+

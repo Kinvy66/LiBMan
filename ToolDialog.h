@@ -14,7 +14,14 @@ class ToolDialog : public QDialog
 public:
     explicit ToolDialog(QWidget *parent = nullptr);
     ~ToolDialog();
-
+    
+    void setContent(const QString& str);
+    
+private slots:
+    void on_pushButton_OK_clicked();
+    
+    void on_pushButton_Cancel_clicked();
+    
 private:
     Ui::ToolDialog *ui;
 };

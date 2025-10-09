@@ -14,7 +14,16 @@ class SettingDialog : public QDialog
 public:
     explicit SettingDialog(QWidget *parent = nullptr);
     ~SettingDialog();
-
+    
+    void setContent(const QString& str);
+    
+private slots:
+    void on_pushButton_OK_clicked();
+    
+    void on_pushButton_Cancel_clicked();
+    
+    void on_pushButton_Apply_clicked();
+    
 private:
     Ui::SettingDialog *ui;
 };

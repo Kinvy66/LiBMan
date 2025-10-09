@@ -33,6 +33,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         ToolDialog.h ToolDialog.cpp ToolDialog.ui
         AboutDialog.h AboutDialog.cpp AboutDialog.ui
         FunctionDialog.h FunctionDialog.cpp FunctionDialog.ui
+        Log.h Log.cpp
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET LiBMan APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR

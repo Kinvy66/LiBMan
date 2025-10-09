@@ -62,6 +62,13 @@
         <file>icon/Wrap-Image Left.svg</file>
         <file>icon/Wrap-Image Right.svg</file>
         <file>icon/libman_logo.svg</file>
+        <file>icon/icon_gu99np4tjn/new_small.svg</file>
+        <file>icon/icon_gu99np4tjn/open_small.svg</file>
+        <file>icon/icon_gu99np4tjn/save_small.svg</file>
+        <file>icon/icon_gu99np4tjn/about.svg</file>
+        <file>icon/icon_gu99np4tjn/setting.svg</file>
+        <file>icon/icon_gu99np4tjn/tool.svg</file>
+        <file>icon/Li.svg</file>
     </qresource>
     <qresource prefix="/gallery-icon">
         <file>icon/gallery/Adobe.svg</file>
@@ -104,5 +111,8 @@
         <file>icon/icon_atotayfbjar/save-3-fill.svg</file>
         <file>icon/icon_atotayfbjar/xinjian.svg</file>
         <file>icon/icon_atotayfbjar/xinjianchuangkou.svg</file>
+        <file>icon/icon_gu99np4tjn/xy.svg</file>
+        <file>icon/icon_gu99np4tjn/fullscreen.svg</file>
+        <file>icon/icon_gu99np4tjn/normalscreen.svg</file>
     </qresource>
 </RCC>

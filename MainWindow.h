@@ -39,6 +39,10 @@ private:
     
 private Q_SLOTS:
     void onActionAbout();
+    void onActionTool();
+    void onActionSetting();
+    void onActionFunction();
+    void onOpenFile();
     
 private:
     

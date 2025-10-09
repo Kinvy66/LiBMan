@@ -1,6 +1,7 @@
 #include "MainWindow.h"
 #include <QComboBox>
 #include <QTimer>
+#include <QFileDialog>
 
 #if !SARIBBON_USE_3RDPARTY_FRAMELESSHELPER
 #include "SAFramelessHelper.h"
@@ -52,13 +53,20 @@
 #include <QLineEdit>
 #include <QDialogButtonBox>
 
+#include "AboutDialog.h"
+#include "ToolDialog.h"
+#include "SettingDialog.h"
+#include "FunctionDialog.h"
+#include "Log.h"
+
+
 
 MainWindow::MainWindow(QWidget* parent) : SARibbonMainWindow(parent)
 {
-    setWindowIcon(QIcon(":/icon/icon/SA.svg"));
+    setWindowIcon(QIcon(":/icon/icon/Li.svg"));
     
-    // setWindowTitle(("新能源电池全生命周期数值模拟软件"));
-    setWindowTitle(("Demo"));
+    setWindowTitle(("新能源电池全生命周期数值模拟软件"));
+    // setWindowTitle(("Demo"));
     
     setWindowModified(true);
     
@@ -107,8 +115,8 @@ MainWindow::MainWindow(QWidget* parent) : SARibbonMainWindow(parent)
     createApplicationMenuButton();
     
     //! 全屏显示
-    // showMaximized();
-    this->resize(800, 600);   // 窗口大小 800x600
+    showMaximized();
+    // this->resize(800, 600);   // 窗口大小 800x600
     
     
 }
@@ -123,39 +131,80 @@ void MainWindow::createApplicationMenuButton()
 {
     SARibbonQuickAccessBar* quickAccessBar = ribbonBar()->quickAccessBar();
     
-    // QAction* fileAction = createAction("文件", nullptr, "file-menu");
-       
-    // QMenu* fileMenu = new QMenu("文件", this);
     
-    
-    // fileMenu->addAction(createAction("新建", nullptr));
-    // fileMenu->addAction(createAction("打开", nullptr));
-    
-    // quickAccessBar->addMenuAction(fileMenu->menuAction());
-    // fileAction->setMenu(fileMenu);
-    
-    // quickAccessBar->addMenuAction(fileAction);
-    
-    
+    // 1. 文件
     QToolButton* fileAction = new QToolButton(this);
     fileAction->setText("文件");
     fileAction->setPopupMode(QToolButton::InstantPopup); // 点击直接弹出菜单
     
     QMenu* fileMenu = new QMenu(this);
-    fileMenu->addAction(createAction("新建", nullptr));
-    fileMenu->addAction(createAction("打开", nullptr));
+    fileMenu->addAction(createAction("新建", ":/icon/icon/icon_gu99np4tjn/new_small.svg"));
+    QAction* openAction = createAction("打开", ":/icon/icon/icon_gu99np4tjn/open_small.svg");
+    connect(openAction, &QAction::triggered, this, &MainWindow::onOpenFile);
+    fileMenu->addAction(openAction);
+    fileMenu->addAction(createAction("保存", ":/icon/icon/icon_gu99np4tjn/save_small.svg"));
     fileAction->setStyleSheet("QToolButton::menu-indicator { image: none; }");
     fileAction->setMenu(fileMenu);
     quickAccessBar->addWidget(fileAction);
     
+    // 2. 工具
+    QToolButton* toolAction = new QToolButton(this);
+    toolAction->setText("工具");
+    toolAction->setPopupMode(QToolButton::InstantPopup); 
     
-    QAction* toolAction = createAction("工具", nullptr, "tool-menu");
-    quickAccessBar->addAction(toolAction);
+    QMenu* toolMenu = new QMenu(this);
+
+    QAction* tool1 =  createAction("功能1", ":/icon/icon/icon_gu99np4tjn/tool.svg");
+    connect(tool1, &QAction::triggered, this, &MainWindow::onActionTool);
+    toolMenu->addAction(tool1);
+    QAction* tool2 =  createAction("功能2", ":/icon/icon/icon_gu99np4tjn/tool.svg");
+    toolMenu->addAction(tool2);
+    connect(tool2, &QAction::triggered, this, &MainWindow::onActionTool);
     
-    QAction* settingAction = createAction("系统设置", nullptr, "setting-menu");
-    quickAccessBar->addAction(settingAction);
+    // 功能3（带子菜单）
+    QMenu* subMenu = new QMenu("功能3", this);  // 创建二级菜单
+    QAction* sub1 = createAction("子功能3-1", nullptr);
+    subMenu->addAction(sub1);
+    QAction* sub2 = createAction("子功能3-2", nullptr);
+    subMenu->addAction(sub2);
+    QAction* sub3 = createAction("子功能3-3", nullptr);
+    subMenu->addAction(sub3);
+    connect(sub1, &QAction::triggered, this, &MainWindow::onActionTool);
+    connect(sub2, &QAction::triggered, this, &MainWindow::onActionTool);
+    connect(sub3, &QAction::triggered, this, &MainWindow::onActionTool);
+    toolMenu->addMenu(subMenu);
+    
+    QAction* tool4 =  createAction("功能4", nullptr);
+    toolMenu->addAction(tool4);
+    connect(tool4, &QAction::triggered, this, &MainWindow::onActionTool);
+
+    toolAction->setStyleSheet("QToolButton::menu-indicator { image: none; }");
+    toolAction->setMenu(toolMenu);
+    
+    quickAccessBar->addWidget(toolAction);
+    
+    // 3. 系统设置
+    QToolButton* settingAction = new QToolButton(this);
+    settingAction->setText("系统设置");
+    settingAction->setPopupMode(QToolButton::InstantPopup);
+    
+    QMenu* settingMenu = new QMenu(this);
+    
+    QAction* setting1 =  createAction("系统设置1", ":/icon/icon/icon_gu99np4tjn/setting.svg");
+    connect(setting1, &QAction::triggered, this, &MainWindow::onActionSetting);
+    settingMenu->addAction(setting1);
+    
+    QAction* setting2 =  createAction("系统设置2", nullptr);
+    connect(setting2, &QAction::triggered, this, &MainWindow::onActionSetting);
+    settingMenu->addAction(setting2);
+    
+    settingAction->setStyleSheet("QToolButton::menu-indicator { image: none; }");
+    settingAction->setMenu(settingMenu);
+    
+    quickAccessBar->addWidget(settingAction);
     
     
+    // 4. 关于
     QAction* aboutAction = createAction("关于", nullptr, "about-menu");
     quickAccessBar->addAction(aboutAction);
     connect(aboutAction, &QAction::triggered, this, &MainWindow::onActionAbout);
@@ -166,15 +215,76 @@ void MainWindow::createApplicationMenuButton()
 }
 
 /**
- * @brief 关于按钮
+ * @brief 关于菜单
  */
 void MainWindow::onActionAbout()
 {
-    QDialog abuotDlg(this);
-    abuotDlg.exec();
+    AboutDialog* abuotDlg = new AboutDialog(this);
+    
+    abuotDlg->exec();
     // abuotDlg.fromXml("customize.xml");
 }
 
+/**
+ * @brief 工具菜单
+ */
+void MainWindow::onActionTool()
+{
+    QAction *action = qobject_cast<QAction*>(sender()); // 获取发送信号的对象
+    
+    if (action) {
+        QString text = action->text();
+        ToolDialog* dlg = new ToolDialog(this);
+        dlg->setContent(text);
+        dlg->exec();
+    }
+}
+
+/**
+ * @brief 系统设置菜单
+ */
+void MainWindow::onActionSetting()
+{
+    QAction *action = qobject_cast<QAction*>(sender()); // 获取发送信号的对象
+    
+    if (action) {
+        QString text = action->text();
+        SettingDialog* dlg = new SettingDialog(this);
+        dlg->setContent(text);
+        dlg->exec();
+    }
+}
+
+/**
+ * @brief 参数配置
+ */
+void MainWindow::onActionFunction()
+{
+    FunctionDialog* dlg = new FunctionDialog(this);
+    dlg->exec();
+}
+
+/**
+ * @brief 打开文件
+ */
+void MainWindow::onOpenFile()
+{
+    QString defaultDir = QCoreApplication::applicationDirPath();
+    QString fileName = QFileDialog::getOpenFileName(
+        this,
+        "打开文件",
+        defaultDir,                     // 默认目录
+        "所有文件 (*.*);;文本文件 (*.txt);;图像文件 (*.png *.jpg)"
+        );
+    
+    if (!fileName.isEmpty()) {
+        // label->setText("已选择文件:\n" + fileName);
+        LOG_INFO("打开文件:" + fileName, appWidget->getLogWidget());
+        
+    } else {
+        LOG_INFO("未选择任何文件", appWidget->getLogWidget());
+    }
+}
 
 
 /**
@@ -211,6 +321,7 @@ void MainWindow::createCategoryMain(SARibbonCategory* page)
         // 更新状态后，需要手动调用ribbonbar刷新重绘标题，目前ribbonbar不会自动检测WindowModified状态
         this->ribbonBar()->repaint();
     });
+    connect(actionOpen, &QAction::triggered, this, &MainWindow::onOpenFile);
     actionOpen->setShortcut(QKeySequence(QLatin1String("Ctrl+O")));
     addAction(actionOpen);
     panelFile->addLargeAction(actionOpen);
@@ -249,15 +360,18 @@ void MainWindow::createCategoryMain(SARibbonCategory* page)
     
     QAction* actionFunction1 = createAction(tr("功能1"), ":/icon/icon/folder-cog.svg");
     addAction(actionFunction1);
+    connect(actionFunction1, &QAction::triggered, this, &MainWindow::onActionFunction);
     panel2->addLargeAction(actionFunction1);
     
     QAction* actionFunction2 = createAction(tr("功能2"), ":/icon/icon/folder-star.svg");
     addAction(actionFunction2);
+    connect(actionFunction2, &QAction::triggered, this, &MainWindow::onActionFunction);
     panel2->addLargeAction(actionFunction2);
     
     
     QAction* actionFunction3 = createAction(tr("功能3"), ":/icon/icon/folder-stats.svg");
     addAction(actionFunction3);
+    connect(actionFunction3, &QAction::triggered, this, &MainWindow::onActionFunction);
     panel2->addLargeAction(actionFunction3);
 
 }
@@ -272,17 +386,19 @@ void MainWindow::createCategoryCondition(SARibbonCategory* page)
     
     QAction* actionFunction1 = createAction(tr("功能1"), ":/icon/icon/folder-checkmark.svg");
     addAction(actionFunction1);
+    connect(actionFunction1, &QAction::triggered, this, &MainWindow::onActionFunction);
     panel3->addLargeAction(actionFunction1);
     
     QAction* actionFunction2 = createAction(tr("功能2"), ":/icon/icon/folder-table.svg");
     addAction(actionFunction2);
+    connect(actionFunction2, &QAction::triggered, this, &MainWindow::onActionFunction);
     panel3->addLargeAction(actionFunction2);
     
     
     QAction* actionFunction3 = createAction(tr("功能3"), ":/icon/icon/folder-stats.svg");
     addAction(actionFunction3);
+    connect(actionFunction3, &QAction::triggered, this, &MainWindow::onActionFunction);
     panel3->addLargeAction(actionFunction3);
-        
 }
 
 /**
